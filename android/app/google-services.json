@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "34129092892",
+    "project_id": "cogent-task",
+    "storage_bucket": "cogent-task.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:34129092892:android:c8ea8d8e291139939d9ad9",
+        "android_client_info": {
+          "package_name": "com.example.cogent_task"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "34129092892-s0apb2ocec6bl61cpn0ju2e56ighire7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCEefthKMpt9Ooy0Nolmaof_TjJRbzVgxY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "34129092892-s0apb2ocec6bl61cpn0ju2e56ighire7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
