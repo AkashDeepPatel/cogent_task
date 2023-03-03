@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'auth/screens/login_screen.dart';
 
@@ -28,7 +30,12 @@ class HomeScreen extends StatelessWidget {
                         Text("Welcome to Notes", style: Theme.of(context).textTheme.titleMedium),
                         Text("Have a nice day!", style: Theme.of(context).textTheme.titleSmall)
                       ],
-                    )
+                    ),
+                    Spacer(),
+                    ElevatedButton(onPressed: (){
+                      FirebaseAuth.instance.signOut();
+                      Get.to(()=>LoginScreen());
+                    }, child: Text("Logout"))
                   ],
                 ),
                 Expanded(

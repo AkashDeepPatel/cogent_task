@@ -7,7 +7,6 @@ import '../screens/auth_gate.dart';
 
 class AuthController extends GetxController with StateMixin{
   TextEditingController phoneNumberCtr = TextEditingController();
-  // TextEditingController otp = TextEditingController();
   String otpCtr = '';
 
   RxString get verificationId => _verificationId;
@@ -53,16 +52,6 @@ class AuthController extends GetxController with StateMixin{
        codeSent: codeSent,
        codeAutoRetrievalTimeout: codeAutoRetrievalTimeout,
      );
-     // Get.dialog(AppDialog(
-     //   message:
-     //   "You will a receive OTP on your given phone number.",
-     //   buttonTitle: "Okay",
-     //   onButtonTap: () {
-     //     Get.back();
-     //     Get.toNamed(OTPVerificationScreen.routeName);
-     //   },
-     // )
-     // );
    }
    else{
      Get.snackbar("Please Enter a Valid Phone Number", "",
@@ -84,33 +73,14 @@ class AuthController extends GetxController with StateMixin{
       final UserCredential userCredential =
           (await auth.signInWithCredential(credential));
 
-      if (userCredential.additionalUserInfo!.isNewUser) {
-        var user = FirebaseAuth.instance.currentUser;
-        // FirebaseFirestore.instance.collection('users').doc(user!.uid).set({
-        //   "uid": auth.currentUser?.uid,
-        //   "phone": phoneNumberCtr.text,
-        //   "fullName": nameCtr.text,
-        //   "email": emailCtr.text,
-        // });
-        // user!.updateEmail(emailCtr.text);
-        // user!.updateDisplayName(nameCtr.text);
-      }
-      // FirebaseFirestore.instance.collection('users').add({
-      //   "uid": auth.currentUser?.uid,
-      //   "phone": phoneNumberCtr.text,
-      //   "fullName": nameCtr.text
-      // });
-
       User? user = userCredential.user;
 
       String token = await user!.getIdToken(true);
       debugPrint("token:$token");
-      // final store = GetStorage();
-      // await store.write("token", token);
-      Get.offAll(()=>AuthGate());
+      Get.offAll(()=>const AuthGate());
       return user;
     } on FirebaseAuthException catch (e) {
-      // SnackBarMessageWidget.show(e.message.toString());
+      Get.snackbar("e.message.toString()","" );
       change(null, status: RxStatus.error(e.message));
       debugPrint("Failed to sign in: $e");
     }
@@ -119,7 +89,6 @@ class AuthController extends GetxController with StateMixin{
 
   resetData() {
     phoneNumberCtr.clear();
-    // otpCtr.clear();
 
     change(null, status: RxStatus.success());
   }
