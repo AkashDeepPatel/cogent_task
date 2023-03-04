@@ -65,6 +65,7 @@ class LoginScreen extends StatelessWidget {
                       controller.submitOTP();
                       // Get.to(()=>HomeScreen());
                     },
+                    color: Colors.amber,
                   ),
                 )
 
@@ -82,7 +83,7 @@ class CommonCircularButton extends StatelessWidget {
     super.key,
     required this.child,
     this.radius = 16,
-    this.color =  Colors.amber,
+    this.color =  Colors.white,
     required this.onPressed,
   });
   final Widget child;

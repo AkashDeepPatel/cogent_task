@@ -2,10 +2,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:otp_text_field/otp_field.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../screens/auth_gate.dart';
 
 class AuthController extends GetxController with StateMixin{
+
   TextEditingController phoneNumberCtr = TextEditingController();
   String otpCtr = '';
 
@@ -73,6 +74,14 @@ class AuthController extends GetxController with StateMixin{
       final UserCredential userCredential =
           (await auth.signInWithCredential(credential));
 
+      if (userCredential.additionalUserInfo!.isNewUser) {
+        var user = FirebaseAuth.instance.currentUser;
+        FirebaseFirestore.instance.collection('users').doc(user!.phoneNumber).set({
+          "uid": auth.currentUser?.uid,
+          "phone": phoneNumberCtr.text,
+        });
+      }
+
       User? user = userCredential.user;
 
       String token = await user!.getIdToken(true);
@@ -80,7 +89,7 @@ class AuthController extends GetxController with StateMixin{
       Get.offAll(()=>const AuthGate());
       return user;
     } on FirebaseAuthException catch (e) {
-      Get.snackbar("e.message.toString()","" );
+      Get.snackbar(e.message.toString(),"" );
       change(null, status: RxStatus.error(e.message));
       debugPrint("Failed to sign in: $e");
     }
