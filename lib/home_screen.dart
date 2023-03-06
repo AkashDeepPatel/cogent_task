@@ -7,7 +7,9 @@ import 'auth/screens/login_screen.dart';
 import 'controllers/notes_controller.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  HomeScreen({Key? key}) : super(key: key);
+
+  NotesController controller = Get.put(NotesController());
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +24,8 @@ class HomeScreen extends StatelessWidget {
                     CommonCircularButton(
                       color: Colors.white,
                       onPressed: (){
-                        Get.to(()=>AddNotesScreen());
+                        controller.reset();
+                        Get.to(()=>AddNotesScreen(), arguments: [false, "id"]);
                       },
                       child: const Icon(Icons.add, color: Colors.black,),
                     ),
@@ -86,7 +89,9 @@ class NotesTile extends StatelessWidget {
               SizedBox(
                   height: 30,
                   child: FloatingActionButton(
-                    onPressed: (){}, child: const Icon(Icons.delete, size: 20,),)),
+                    onPressed: (){
+
+                    }, child: const Icon(Icons.delete, size: 20,),)),
             ],
           ),
         )

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cogent_task/add_notes_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,6 +14,10 @@ class NotesController extends GetxController{
   TextEditingController titleCtr = TextEditingController();
   TextEditingController textCtr = TextEditingController();
 
+  reset(){
+    titleCtr.clear();
+    textCtr.clear();
+  }
 
   addNote() {
   try {
@@ -28,11 +33,48 @@ class NotesController extends GetxController{
     }
   }
 
+  gotoEditNote(String id, String title, String text){
+    titleCtr.text = title;
+    textCtr.text = text;
+    Get.to(()=>AddNotesScreen(), arguments: [true, id]);
+  }
+
+  updateNote(String id) async{
+    try {
+      await _firestore
+          .collection('notes')
+          .doc(user!.phoneNumber)
+          .collection(user!.phoneNumber!)
+          .doc(id).update({
+        'title': titleCtr.text,
+        'text': textCtr.text,
+      });
+      Get.back();
+    } catch (e) {
+      debugPrint("$e");
+    }
+  }
+
+  deleteNote(String id) async{
+    try {
+      await _firestore
+          .collection('notes')
+          .doc(user!.phoneNumber)
+          .collection(user!.phoneNumber!)
+          .doc(id)
+          .delete();
+    } catch (e) {
+      debugPrint("$e");
+    }
+  }
+
 }
 
 
 class NotesList extends StatelessWidget {
-  const NotesList({super.key});
+  NotesList({super.key});
+
+  NotesController controller = Get.put(NotesController());
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +132,9 @@ class NotesList extends StatelessWidget {
                     SizedBox(
                         height: 30,
                         child: FloatingActionButton(
-                          onPressed: (){}, child: const Icon(Icons.delete, size: 20,),)),
+                          onPressed: (){
+                            controller.deleteNote(snapshot.data!.docs[index].id);
+                          }, child: const Icon(Icons.delete, size: 20,),)),
                   ],
                 ),
               ),
@@ -99,7 +143,9 @@ class NotesList extends StatelessWidget {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      CommonCircularButton(onPressed: (){}, radius: 4, color: Colors.redAccent,child: const Icon(Icons.edit, size: 20,),),
+                      CommonCircularButton(onPressed: (){
+                            controller.gotoEditNote(snapshot.data!.docs[index].id, snapshot.data!.docs[index].get('title'), snapshot.data!.docs[index].get('text'));
+                      }, radius: 4, color: Colors.redAccent,child: const Icon(Icons.edit, size: 20,),),
                       const SizedBox(height: 8),
                     ],
                   ))

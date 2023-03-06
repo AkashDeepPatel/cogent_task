@@ -32,7 +32,8 @@ class AddNotesScreen extends StatelessWidget {
                       const Spacer(),
                       CommonCircularButton(
                         radius: 10,
-                        onPressed: (){},
+                        onPressed: (){
+                        },
                         child: const Icon(Icons.undo, color: Colors.grey,),
                       ),
                       CommonCircularButton(
@@ -42,13 +43,16 @@ class AddNotesScreen extends StatelessWidget {
                       ),
                       CommonCircularButton(
                         radius: 10,
-                        onPressed: (){},
+                        onPressed: (){
+                          controller.deleteNote(Get.arguments[1]);
+                          Get.back();
+                        },
                         child: const Icon(Icons.delete, color: Colors.grey,),
                       ),
                       CommonCircularButton(
                         radius: 10,
                         onPressed: (){
-                          controller.addNote();
+                          Get.arguments[0]==true?controller.updateNote(Get.arguments[1]):controller.addNote();
                         },
                         child: const Icon(Icons.save, color: Colors.grey,),
                       ),
